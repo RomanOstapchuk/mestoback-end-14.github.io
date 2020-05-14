@@ -1,11 +1,5 @@
-class NotFoundError extends Error {
-  constructor(message) {
-    super(message);
-    this.statusCode = 404;
-  }
-}
-
 const mongoose = require('mongoose');
+const NotFoundError = require('../errors/notfounderror');
 const cardModel = require('../models/card.js');
 
 const { ObjectId } = mongoose.Types;

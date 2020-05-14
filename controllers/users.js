@@ -26,7 +26,7 @@ module.exports.createUser = (req, res) => {
   const {
     email, password, name, about, avatar,
   } = req.body;
-  bcrypt.hash(req.body.password, 10)
+  bcrypt.hash(password, 10)
     .then((hash) => {
       userModel.create({
         email,
@@ -35,7 +35,8 @@ module.exports.createUser = (req, res) => {
         about,
         avatar,
       })
-        .then((user) => res.status(200).send({ data: user }))
+        .then((user) => userModel.findOne({ _id: user._id }))
+        .then((user) => res.status(200).send({ user }))
         .catch((err) => ((err.name === 'ValidationError') ? res.status(400).send({ message: 'Ошибка валидации' }) : res.status(500).send({ message: 'Произошла ошибка' })));
     });
 };

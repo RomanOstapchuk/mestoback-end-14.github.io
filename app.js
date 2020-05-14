@@ -1,6 +1,9 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const helmet = require('helmet');
 const { PORT, DATABASE_URL } = require('./config.js');
 
 const { login, createUser } = require('./controllers/users');
@@ -13,6 +16,8 @@ const cardsrouter = require('./routes/cards');
 
 const app = express();
 
+app.use(helmet());
+
 mongoose.connect(DATABASE_URL, {
   useNewUrlParser: true,
   useCreateIndex: true,
@@ -20,6 +25,7 @@ mongoose.connect(DATABASE_URL, {
   useUnifiedTopology: true,
 });
 
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/signin', login);
