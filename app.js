@@ -3,6 +3,9 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { PORT, DATABASE_URL } = require('./config.js');
 
+const { login, createUser } = require('./controllers/users');
+const { auth } = require('./middlewares/auth');
+
 const usersrouter = require('./routes/user');
 
 const cardsrouter = require('./routes/cards');
@@ -17,17 +20,11 @@ mongoose.connect(DATABASE_URL, {
   useUnifiedTopology: true,
 });
 
-
-app.use((req, res, next) => {
-  req.user = {
-    _id: '5eb683f8254a5b1b7da92ad8',
-  };
-
-  next();
-});
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.post('/signin', login);
+app.post('/signup', createUser);
+app.use(auth);
 app.use('/users', usersrouter);
 app.use('/cards', cardsrouter);
 app.use((req, res) => {
