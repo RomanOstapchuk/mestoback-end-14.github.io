@@ -26,7 +26,7 @@ module.exports.createUser = (req, res) => {
   const {
     email, password, name, about, avatar,
   } = req.body;
-  bcrypt.hash(password, 10)
+  bcrypt.hash(password, 8)
     .then((hash) => {
       userModel.create({
         email,

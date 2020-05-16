@@ -16,7 +16,8 @@ module.exports.auth = (req, res, next) => {
   try {
     payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'SOME-SECRET-KEY');
   } catch (err) {
-    res.status(UnauthorizeError.statusCode || 500).send({ message: UnauthorizeError.message });
+    return res.status(UnauthorizeError.statusCode || 500)
+      .send({ message: UnauthorizeError.message });
   }
 
 
